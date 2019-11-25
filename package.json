@@ -1,6 +1,7 @@
 {
   "name": "schism",
   "version": "0.0.1",
+  "type": "module", 
   "description": "A self-hosting Scheme to WebAssembly compiler",
   "scripts": {
     "test": "./run-tests.sh"

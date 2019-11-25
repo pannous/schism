@@ -16,7 +16,8 @@
 
 # Get the current directory. Thanks to 
 # https://gist.github.com/TheMengzor/968e5ea87e99d9c41782
-SOURCE="${BASH_SOURCE[0]}"
+# SOURCE="${BASH_SOURCE[0]}"
+SOURCE=/me/schism
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
   SOURCE="$(readlink "$SOURCE")"
