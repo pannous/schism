@@ -3,8 +3,8 @@
 
 ;; This library contains non-standard Schism-isms.
 (library (schism)
-    (export gensym hello Ω concat println print puts puta put sum length len list-all-eq?)
-    (import (rnrs) (sets)
+    (export gensym hello Ω deep-eq? concat println print puts puta put sum length len list-all-eq?)
+    (import (rnrs)
         (%schism-runtime))
 
 
@@ -38,11 +38,6 @@
                 (deep-eq? (cdr a) (cdr b)))
             (eq? a b)))
 
-    (define (≈= a b) (deep-eq? a b))
-    (define (±= a b) (deep-eq? a b))
-
-    (define (¬= a b) (not (eq? a b)))
-    (define (≠= a b) (not (eq? a b)))
 
 
     (define (hello)

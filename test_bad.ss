@@ -13,6 +13,14 @@
         (a b)
     )
 
+    ;    (define (~a b) (deep-eq? a b))
+    ;    (define (¬a b) (not (eq? a b)))
+    ;    (define (. a b) (cons a b)) NOP
+
+
+
+    ;    (define (#1 xs) (car xs))
+    ;    (define (#2 xs) (car (cdr xs)))
 ;    variadic function
 ;    (define (procedure . args) NOPE
 

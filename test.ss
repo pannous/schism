@@ -2,16 +2,31 @@
 ;https://stereobooster.github.io/schism/
 ; unused values not explicitly dropped by end of block ---
 (library (pannous demo)
+    ;Error: Scheme runtime error in char->integer: not a char == MISSING BRACE (()
     ;    Cannot read property 'index' of undefined => (and (fun1) (fun2)) !!
 
     (export fact test)
-    (import (extensions) (rnrs) (rnrs mutable-pairs) (schism) (sets))
+    (import (extensions) (rnrs) (rnrs mutable-pairs) (schism) (schism compiler))
+
+    ;    fetch
+    (define (wrap x) (cons x '()))
     (define (== a b) (eq? a b))
+    (define (= a b) (eq? a b))
+
+    (define (~= a b) (deep-eq? a b))
+    (define (≈= a b) (deep-eq? a b))
+    (define (±= a b) (deep-eq? a b))
+    (define (¬= a b) (not (eq? a b)))
+    (define (≠= a b) (not (eq? a b)))
+    ;    (define (~a b) (deep-eq? a b))
+    ;    (define (¬a b) (not (eq? a b)))
+    ;    (define (. a b) (cons a b)) NOP
+
+
 
     ;    (define (#1 xs) (car xs))
     ;    (define (#2 xs) (car (cdr xs)))
-    (define (var name)
-            `(var . ,name)) ; `?? ,ok:unquote  (var 'a) => `(var . a)
+    (define (var name) `(var . ,name)) ; `!!!?? ,ok:unquote  (var 'a) => `(var . a)
 
     (define ($1 xs) (car xs))
     (define ($2 xs) (car (cdr xs)))
@@ -23,7 +38,6 @@
     (define (rest xs) (cdr xs))
     (define (tail xs) (cdr xs))
     (define (last xs) (caddr xs))
-
 
 
     ;(rnrs base), (rnrs) standard Scheme
@@ -39,7 +53,6 @@
     )
 
     (define (sum_BAD xs)
-        ;        (if (equal? '() xs) 0 )
         (if (null? xs) 0
             (if (pair? xs)
                 (+ (car xs) (sum (cdr xs)))
@@ -51,123 +64,58 @@
     ;    variadic function
     ;    (define (procedure . args) NOPE
 
-
-
     (define (fibonacci n)
         (if (< n 2) 1 (+ (fibonacci (- n 1)) (fibonacci (- n 2))))
     )
 
-    ;    (define fibonacci
-    ;        (lambda (n) (if (< n 2) 1 (+ (fibonacci (- n 1)) (fibonacci (- n 2))))))
+
+    (define (do-test)
+        (and (eq? 'four (cdr (assp (lambda (x) (eq? x 4))
+                                     '((1 . one)
+                                          (3 . three)
+                                          (4 . four)
+                                          (5 . five)))))
+            (eq? #f (assp (lambda (x) (eq? x 0))
+                            '((1 . one)
+                                 (3 . three)
+                                 (4 . four)
+                                 (5 . five))))
+            (eq? #f (assp (lambda (x) (eq? x 0))
+                            '())))
+    )
+    (define (长 v) (length v))
+    (define (说 x) (put x))
+    ;定义 [定義] dìngyì
+
+
+
+    (define (go a.b) ; a.b just a name?
+        (puts `(,a.b)) ; OK SOMETHING is working here
+        (puts `dfa) ;  INTERESTING  just like quote, BUT
+        (puts `a.b) ; INTERESTING a.b WHY: ?
+        (put `(1 2 3)) ; INTERESTING 1,2,3,
+        (put '(1 2 3)) ; INTERESTING 1,2,3,
+        (puts a.b)
+        (puts (car a.b))
+        ;    (puts (,a.b))
+
+    )
 
     ;    (define a 12)
     (define (test)
+        (puts (长 '(1 2 3)))
+
+        (go (Ω 1 2))
+        ;        (go (1.2))
+        ;        (go 'a.%LKJHOIUYå ∂ƒ&.b)
+
+
+        ;            (set! x (111))
         (let ((x 12) (y 13))
-            ;            (set! x (111))
             (puts x)
             (puts y)
+            (puts x)
         )
-        (puts '(1 2 3 4))
-        (puts '(a b c d))
-        (puts (Ω 1 2))
-        (puts (Ω 1 2))
-
-        (puts '(1 . 2))
-        (puts (eq? (Ω 1 2) '(1 . 2))) ;#f?? why?
-
-        (puts "OK")
-        (puts (not 0)) ; f :(
-        (puts (not 1)) ; f :(
-        (puts (not #t)) ; f
-        (puts (not #f)) ; t
-        ;        (set! state (not state))
-
-        ;        (define x 'a)
-        ;        (list x x) ;<graphic> (a a)
-        ;        (let ([x 'b])
-        ;        (list x x)) ;<graphic> (b b)
-        ;        (error 'test "all good")
-        (puts 'YAY)
-        (puts (fibonacci 10))
-        (puts (null? 'hello))
-        (puts (< 0 1)) ; #t
-        ;        (puts (+ 1 2 3)); car: not a pair
-        ;        (puts (+ (1 2 3))); car: not a pair
-        (puts (+ (+ 2 -2) (+ 2 2)))
-        (fact 5)
-        ;        (hello)
-        (puts (quote yay))
-        (puts '(puts 'yay))
-        ;        (puts (list-all-eq? (1 2) (1 2)))
-        ;        (puts (listsadf))
-
-        (puts (* 2 (* -2 (* 2 (* 2 2)))))
-        (quote (1 2 3 4 5))
-        (quote (puts 'yay))
-        "OK" ;[String: 'sOK']
-            '(1 2 3 4 5) ; Pair { car: 2,cdr: Pair { car: 4, cdr: Pair { car: 6, cdr: [Pair] } }} WTF
-            'ok ;Ssok
-        ;        eq?
-        (puts #t) ; #t ;)
-        (puts (number? 42)) ; #t yay
-        (puts (eq? 1 2))
-        (puts 'procedure?)
-        (puts (procedure? test)) ; t
-        ;        (puts (procedure? hell));  unbound identifier :(
-        (puts (procedure? 'test)) ; f
-        ;        (puts (pair? (1)))
-        (puts (pair? '(1 2 3))) ; t
-        (puts (pair? 'HI)) ; f
-
-
-        ;        (puts (pair? (1 2 3)))
-        ;        (puts (pair? 1 2 3))
-
-
-
-        (puts "DONE")
-        ;        number? 42
-        ;        #t ; 0.5 type number LOL
-        #f ; 0 type number
-        ;        (car 1 2)
-
-        ;        (+ 1 (car (1 2)))
-        (cons 3 4) ; (3 . 4)
-        (puts (cons 3 4)) ; (3 . 4)
-        (puts '(1 2 3))
-
-        ;        (write (3 4))
-        ;        (print  (cons 3 4))
-        (+ 1 (car (cons 3 4))) ; 4 OK
-        (puts (list? '(a b c)))
-        (puts (eq? 10 (fold-left (lambda (a b) (+ a b)) 0 '(1 2 3 4)))) ;t
-        (puts (string=? "Mom and Dad" "mom and dad"))
-        42
-        ;        (puts (eval '(+ 1 2)))
-        ;        (puts (concat "hi" "YOU"))
-        (puts (Ω "hi" "YOU"))
-        ;        (puts (concat "hi" "YOU"))
-        (puts (concat '("hi" "YOU" "fool"))) ;//#NOPE
-
-
-        ;        (puts ("hi" . "YOU")) ; NOPE
-        (unless #f ; == IF NOT …
-            (puts (sum '(1 2 3 4 5)))
-        )
-        (puts (has 3 '(1 2 3 4 5)))
-        (puts (has '(1 2 3 4 5) 3))
-        ;        (puts (in '(1 2 3 4 5) 3))
-        (puts (if 1 2 3))
-        ;        (puta (if 1 (2) (3)))
-
-        ;        (puts (if (1) (2) (3)))
-
-        ;        (if 1 (puts ("OK") 0))
-        (puts (sum_BAD '(1 2 3 4 5)))
-        (hello)
-        ;        (put ,('(1 2 3))) unquote?
-        (put "OK")
-        (put 42)
         (put (Ω 1 2))
         ;        (puta (Ω 1 2));not a pair
         (put '(1 2 3 4 5))
@@ -179,15 +127,62 @@
         (put `(1 2 3 4 5))
         (put '(1 2 3 4 5))
         (put '(1 2 3 4 5))
-;        (put put) ;#<procedure>
+        ;        (put put) ;#<procedure>
         ;        (write #put); ut !
         ;        (write #p1)
         (puta '(1 2 3 4 5))
         (newline) ; FLUSH AT END!!
             'ok
-        ;        (car '())
-        ;        (car 0)
+        (Ω 1 2) ; Pair { car: 2, cdr: 4 }
+        (pair? (Ω 1 2))
+        (pair? '(1 2))
+        (~= '(1 2) (Ω 1 2))
+        (put (Ω 1 (Ω 2 3)))
+        ;        (put (1 . 2))
+        (puts (~= (Ω 1 (Ω 2 3)) `(1 2 3))) ;f
+        (puts (~= (Ω 1 (Ω 2 3)) '(1 2 3))) ;f
 
+        ;        (~= (Ω 1 (Ω 2 3)) ((Ω 1 2) . (Ω 2 3)))
+        ;        ( . (Ω 1 2) (Ω 2 3)); invalid improper list
+        ;        ( . (Ω 1 2) '(1 2 3)); invalid improper list
+        ;        ( . '(1 2 3) '(1 2 3)); invalid improper list
+        (do-test)
+        (var 'a)
+        (var 1)
+        (put 'a)
+        (puts (wrap 1))
+        ;        (puts (1)); function signature mismatch
+        (º) ; null ++
+        ;        ø ; result Closure { index: 503, env: [] } !
+        put ; result Closure { index: 503, env: [] } !  POINTERS
+        ;        (car '()) ;  not a pair
+        ;        (car 1) ; not a pair
+        1 ; true  via js
+        0 ; false via js
+        #x7d ;        0x7d 125
+;        (read-library-from-file "./schism/compiler.ss")
+;        (read-library-from-file "./scheme-lib/extensions.ss")
+        ;        hallo
+        ;        (hallo)
+        ;        (put (read-library-from-file "./schism/compiler.ss")) ; WOW WORKS!!
+        ;        (compile-library (map integer->char '(1 2 3)))
+;        TODO reset %write-char
+    (write-bytes (compile-library '(library (test) (export teeeeest) (import (rnrs)) (define (teeeeest) 42)))); OMFG!!
+        ;                (compile-test '(library test))
+    )
+    (define (º) '())
+    (define (null) '())
+    (define (ø) '())
+    ;    (define ø '())
+
+
+    (define (read-library-from-file filename)
+        (%open-as-stdin filename)
+        (read))
+
+    (define (compile-test lisp)
+        (write-bytes ; to test.wasm
+            (compile-library lisp))
     )
 
 )
