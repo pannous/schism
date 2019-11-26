@@ -71,7 +71,10 @@
 
   (define (find-var env var idx)
     (when (null? env)
-      (eval-error var "unbound variable"))
+        (write "unbound variable: ")
+        (write var)
+      (eval-error var "unbound variable")
+    )
     (if (eq? var (car env))
         idx
         (find-var (cdr env) var (+ idx 1))))

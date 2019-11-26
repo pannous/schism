@@ -1,6 +1,4 @@
 ;; Copyright 2018, 2019 Google LLC
-
-
 (library (schism compiler)
   (export compile-library compile-stdin->stdout)
   (import (rnrs)
@@ -16,6 +14,7 @@
     (newline)
     x)
   (define (trace-and-error x where what)
+    (write "unbound identifier: ")
     (trace-value x)
     (error where what))
   (define (index-of-helper x ls index same?)
