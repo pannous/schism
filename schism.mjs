@@ -12,7 +12,7 @@ import {compileWithHostScheme, stage0_compile} from './run-utils.mjs';
 import assert from 'assert';
 import fs from 'fs';
 
-Error.stackTraceLimit = 20;
+Error.stackTraceLimit = 10;
 
 let test = "test.ss";
 let test2 = "test2.ss";

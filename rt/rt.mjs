@@ -169,7 +169,8 @@ function rt(engine) {
         '%peek-char': peek,
         '%write-char': byte => engine.output_data.push(byte),
         'error': function (where, what) {
-            throw new SchemeError(schemeToJS(where), schemeToJS(what));
+            let pointer = "\n input_index "+engine.input_index+"\n";
+            throw new SchemeError(schemeToJS(where+pointer), schemeToJS(what));
         },
         '%log-char': byte => engine.log += String.fromCharCode(byte),
         '%flush-log': () => {

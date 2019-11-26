@@ -182,7 +182,7 @@
             ((library-name-equal? name '(rnrs))
                 (read-library-from-file "./scheme-lib/rnrs.ss"))
             ((library-name-equal? name '(extensions))
-                (read-library-from-file "./scheme-lib/extensions.ss"))
+                (read-library-from-file "./lib/extensions.ss"))
             ((library-name-equal? name '(schism compiler))
                 (read-library-from-file "./schism/compiler.ss"))
             ((library-name-equal? name '(rnrs mutable-pairs))
@@ -364,11 +364,13 @@
             env
             (add-lexical (car vars) (car renamed)
                 (add-lexicals (cdr vars) (cdr renamed) env))))
+
+    ; TODO: current function name + pointer
     (define (lookup name env)
         (let ((pair (assq name env)))
             (unless pair
-                (trace-and-error name 'lookup "unbound identifier"))
-            ((cdr pair))))
+            (trace-and-error name 'lookup "unbound identifier"))
+        ((cdr pair))))
 
     (define (make-export-environment lib)
         (let* ((name (cadr lib))

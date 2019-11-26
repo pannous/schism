@@ -161,9 +161,9 @@
         0 ; false via js
         #x7d ;        0x7d 125
 ;        (read-library-from-file "./schism/compiler.ss")
-;        (read-library-from-file "./scheme-lib/extensions.ss")
+        (read-library-from-file "./lib/extensions.ss"); ok but how to INCLUDE?
         ;        hallo
-        ;        (hallo)
+                (hallo)
         ;        (put (read-library-from-file "./schism/compiler.ss")) ; WOW WORKS!!
         ;        (compile-library (map integer->char '(1 2 3)))
 ;        TODO reset %write-char
